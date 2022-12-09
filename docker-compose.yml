@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  developer-service-db:
+    image: mongo:4.0.0
+    container_name: developer-service-db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASS}
+    volumes:
+      - '../data/mongo:/data/developer-service/db'
+
+  developer-service:
+    container_name: developer-service
+    image: greenstamp/developer-service
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+    depends_on:
+      - developer-service-db
