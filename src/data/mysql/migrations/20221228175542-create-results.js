@@ -9,6 +9,10 @@ module.exports = {
         autoIncrement: true,
         allowNull: false
       },
+      appName: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       package: {
         type: Sequelize.STRING,
         allowNull: false
@@ -32,6 +36,10 @@ module.exports = {
       unit: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      optional: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       timestamp: {
         type: Sequelize.DATE,

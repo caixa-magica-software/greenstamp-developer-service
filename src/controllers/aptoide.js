@@ -17,7 +17,6 @@ const parseError = (error, callback) => {
 }
 
 const parseResponse = (response, packageName, callback) => {
-  console.log(response.data)
   callback({
     code: 200,
     data: {
@@ -25,7 +24,6 @@ const parseResponse = (response, packageName, callback) => {
       packageName: packageName,
       url: response.data.file.path,
       metadata: response,
-      tests:[]
     }
   })
 }
