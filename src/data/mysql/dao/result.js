@@ -1,23 +1,38 @@
+const { parse } = require("path")
 const Result = require("../models/result")
 
 exports.insert = (dto) => {
   return new Promise((resolve, reject) => {
-    Result.fromDTO(dto).save()
+    Result.bulkCreate(parseEntriesToInsert(dto))
       .then(result => resolve(result.dataValues))
       .catch(error => reject(error))
   })
 }
 
+const parseEntriesToInsert = (dto) => {
+  return dto.results.map(result => ({
+    appName: dto.appName,
+    package: dto.packageName,
+    version: dto.version,
+    testName: result.name,
+    testParameter: result.parameters,
+    testResult: result.result,
+    unit: result.unit,
+    timestamp: dto.timestamp,
+    optional: dto.optional
+  }))
+}
+
 exports.getByApp = (dto) => {
   return new Promise((resolve, reject) => {
     Result.findAll({ where: { package: dto.packageName, version: dto.version } })
-    .then(result => resolve(parseEntries(result)))
-    .catch(error => console.log("error", error))
+    .then(result => resolve(parseEntriesToResponse(result)))
+    .catch(error => reject(error))
   })
       
 }
 
-const parseEntries = (entries) => {
+const parseEntriesToResponse = (entries) => {
   if(entries.length == 0) return {}
   const results = entries.map((result) => ({
     name: result.dataValues.testName,

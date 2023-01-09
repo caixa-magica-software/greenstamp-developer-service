@@ -4,15 +4,12 @@ const { insert, getByApp } = require("../data/mysql/dao/result");
 const ResultDTO = require("../dto/result");
 
 exports.saveResult = (body) => {
-  const { appName, packageName, version, testName, testParameter, testResult, unit, timestamp } = body
+  const { appName, packageName, version, results, timestamp, optional } = body
   return new Promise((resolve, reject) => {
     if(appName == null || appName == "") reject({ code: 400, message: "appName field cannot be null or empty" });
     else if(packageName == null || packageName == "") reject({ code: 400, message: "package field cannot be null or empty" });
     else if(version == null || version == "") reject({ code: 400, message: "version field cannot be null or empty" });
-    else if(testName == null || testName == "") reject({ code: 400, message: "testName field cannot be null or empty" });
-    else if(testParameter == null || testParameter == "") reject({ code: 400, message: "testParameter field cannot be null or empty" });
-    else if(testResult == null || testResult == "") reject({ code: 400, message: "testResult field cannot be null or empty" });
-    else if(unit == null || unit == "") reject({ code: 400, message: "unit field cannot be null or empty" });
+    else if(results == null || results.lenght == 0) reject({ code: 400, message: "results field cannot be null or empty" });
     else if(timestamp == null || timestamp == "") reject({ code: 400, message: "timestamp field cannot be null or empty" });
     else executeSaveResult(resolve, reject, body)
   });
@@ -42,6 +39,6 @@ const executeGetResultsByApp = (resolve, reject, body) => {
 }
 
 const parseResults = (resolve, results) => {
-  if(results.length && results.lenght > 0) resolve({ code: 200, data: results })
+  if(Object.keys(results).length > 0) resolve({ code: 200, data: results })
   else resolve({ code: 404, data: results })
 }

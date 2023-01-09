@@ -1,15 +1,12 @@
 module.exports = class ResultDTO {
 
-  constructor(appName, packageName, version, testName, testParameter, testResult, unit, optional, timestamp) {
+  constructor(appName, packageName, version, results, timestamp, optional) {
     this.appName = appName
     this.packageName = packageName
     this.version = version
-    this.testName = testName
-    this.testParameter = testParameter
-    this.testResult = testResult
-    this.unit = unit
-    this.optional = optional
     this.timestamp = timestamp
+    this.results = results
+    this.optional = optional
   }
 
   static fromAPI(body) {
@@ -17,12 +14,9 @@ module.exports = class ResultDTO {
       body.appName,
       body.packageName,
       body.version,
-      body.testName,
-      body.testParameter,
-      body.testResult,
-      body.unit,
+      body.results,
+      body.timestamp,
       body.optional,
-      body.timestamp
     )
   }
 
