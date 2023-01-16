@@ -26,5 +26,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASS: ${DATABASE_PASS}
+      APTOIDE_API_BASE_URL: ${APTOIDE_API_BASE_URL}
+      NODE_ENV: ${NODE_ENV}
     depends_on:
       - developer-service-db
