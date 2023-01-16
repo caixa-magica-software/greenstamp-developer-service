@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  developer-service-db:
+    image: mysql:8.0
+    container_name: developer-service-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASS}
+    volumes:
+      - '../data/mysql:/var/lib/mysql'
+
+  developer-service:
+    container_name: developer-service-api
+    image: greenstamp/developer-service
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URI: ${DATABASE_URI}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+    depends_on:
+      - developer-service-db
