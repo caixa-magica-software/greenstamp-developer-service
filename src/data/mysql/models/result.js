@@ -11,7 +11,8 @@ module.exports = class Result extends Model {
       testResult: DataTypes.STRING,
       unit: DataTypes.STRING,
       timestamp: DataTypes.DATE,
-      optional: DataTypes.STRING
+      optional: DataTypes.STRING,
+      state: DataTypes.INTEGER
     }, { 
       sequelize,
       tableName:"results"

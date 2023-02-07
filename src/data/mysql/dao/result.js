@@ -1,4 +1,3 @@
-const { parse } = require("path")
 const Result = require("../models/result")
 
 exports.insert = (dto) => {
@@ -23,6 +22,18 @@ const parseEntriesToInsert = (dto) => {
   }))
 }
 
+exports.update = (dto) => {
+  return new Promise((resolve, reject) => {
+    const updt = parseEntriesToInsert(dto)
+    updt.forEach(test => {
+      Result.update({ ...test, state: 1 }, 
+        { where: { package: dto.packageName, version: dto.version, testName: test.testName, testParameter: test.testParameter } })
+        .then(result => resolve(result.dataValues))
+        .catch(error => reject(error))
+    })
+  })
+}
+
 exports.getByApp = (dto) => {
   return new Promise((resolve, reject) => {
     Result.findAll({ where: { package: dto.packageName, version: dto.version } })
@@ -38,7 +49,8 @@ const parseEntriesToResponse = (entries) => {
     name: result.dataValues.testName,
     parameters: result.dataValues.testParameter,
     result: result.dataValues.testResult,
-    unit: result.dataValues.unit
+    unit: result.dataValues.unit,
+    state: result.dataValues.state
   }))
   return {
     appName: entries[0].dataValues.appName,

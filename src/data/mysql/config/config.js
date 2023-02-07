@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   development: {
-    database: "developer-service-db-dev",
+    database: "developer-service-db",
     username: "root",
     password: "devpassword",
     host: "172.18.0.2",
