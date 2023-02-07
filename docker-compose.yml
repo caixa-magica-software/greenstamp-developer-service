@@ -24,7 +24,7 @@ services:
     environment:
       DATABASE_URI: ${DATABASE_URI}
       DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
+      DB_HOST: ${DATABASE_USER}
       DATABASE_PASS: ${DATABASE_PASS}
     depends_on:
       - developer-service-db

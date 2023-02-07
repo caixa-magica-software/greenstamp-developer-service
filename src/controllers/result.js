@@ -1,6 +1,6 @@
 const dao = require("../data/mysql/dao/result")
 
-const { insert, getByApp } = require("../data/mysql/dao/result");
+const { insert, update, getByApp } = require("../data/mysql/dao/result");
 const ResultDTO = require("../dto/result");
 
 exports.saveResult = (body) => {
@@ -13,6 +13,25 @@ exports.saveResult = (body) => {
     else if(timestamp == null || timestamp == "") reject({ code: 400, message: "timestamp field cannot be null or empty" });
     else executeSaveResult(resolve, reject, body)
   });
+}
+
+exports.updateResult = (body) => {
+  const { appName, packageName, version, results, timestamp, optional } = body
+  return new Promise((resolve, reject) => {
+    if(appName == null || appName == "") reject({ code: 400, message: "appName field cannot be null or empty" });
+    else if(packageName == null || packageName == "") reject({ code: 400, message: "package field cannot be null or empty" });
+    else if(version == null || version == "") reject({ code: 400, message: "version field cannot be null or empty" });
+    else if(results == null || results.lenght == 0) reject({ code: 400, message: "results field cannot be null or empty" });
+    else if(timestamp == null || timestamp == "") reject({ code: 400, message: "timestamp field cannot be null or empty" });
+    else executeUpdateResult(resolve, reject, body)
+  });
+}
+
+const executeUpdateResult = (resolve, reject, body) => {
+  const dto = ResultDTO.fromAPI(body)
+  return update(dto)
+    .then(result => resolve({ code: 200, data: result }))
+    .catch(error => reject({ code: 500, message: error }))
 }
 
 const executeSaveResult = (resolve, reject, body) => {

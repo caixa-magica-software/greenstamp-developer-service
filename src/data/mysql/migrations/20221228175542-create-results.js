@@ -23,19 +23,19 @@ module.exports = {
       },
       test_name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       test_parameter: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       test_result: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       unit: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       optional: {
         type: Sequelize.STRING,
@@ -44,6 +44,11 @@ module.exports = {
       timestamp: {
         type: Sequelize.DATE,
         allowNull: false
+      },
+      state: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       },
     })
   },
