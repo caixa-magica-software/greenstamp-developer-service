@@ -57,12 +57,11 @@ const executeAnalysis = (resolve, reject, shouldRegister, file, body) => {
 
 const sendToAnalyzers = (resolve, storeInfo, file, appInfo, analyzers) => {
   analyzers.forEach(analyzer => {
-    const data = new FormData()
-    Object.keys(appInfo).forEach(key => { data.append(key, appInfo[key]) })
-    if(storeInfo && storeInfo.url) data.append("url", storeInfo.url)
-    if(storeInfo && storeInfo.metadata) data.append("metadata", storeInfo.metadata) 
-    data.append("binary", JSON.stringify(file.buffer), file.originalname)
-    axios.post(analyzer.url, data, { headers: data.getHeaders() })
+    const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
+    const form = new FormData()
+    form.append("app", JSON.stringify(app))
+    if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
+    axios.post(analyzer.url, form, { headers: form.getHeaders() })
   })
   resolve({ code: 200 })
 } 
