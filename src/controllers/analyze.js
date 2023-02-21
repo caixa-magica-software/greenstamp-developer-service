@@ -52,7 +52,6 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
 }
 
 const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
-  //const categories = categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result))
   const categories = await Promise.all(categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result)))
   analyzers.forEach(analyzer => {
     insertApp(ResultDTO.fromAPI({...appInfo, categories, timestamp: Date.now(), results: analyzer.tests}))
@@ -62,13 +61,11 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
   analyzers.forEach(analyzer => {
-    /*
     const form = new FormData()
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
     if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
     axios.post(analyzer.url, form, { headers: form.getHeaders() })
-    */
   })
   resolve({ code: 200 })
 } 
