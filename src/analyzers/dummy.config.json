@@ -1,6 +1,6 @@
 {
   "name": "Dummy analyze Tool",
-  "url": "http://51.210.255.156:3333/api/analyze",
+  "url": "http://localhost:3333/api/analyze",
   "entity": "CMS",
   "tests": [
     {
