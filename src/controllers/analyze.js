@@ -40,9 +40,8 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
   try {
     const appInfo = await getApplicationInfo(body)
     const categoriesInfo = await getApplicationCategory(appInfo.data.id)
-    console.log(categoriesInfo)
     if(shouldRegister) registerApp(body, categoriesInfo.data, analyzers)
-    //sendToAnalyzers(resolve, body, {...appInfo, categories: categoryInfo }, file, analyzers)
+    sendToAnalyzers(resolve, body, {...appInfo, categories: categoriesInfo }, file, analyzers)
   } catch(error) {
     if(error.code == 404 && file != null) {
       if(shouldRegister) registerApp(body, analyzers)
@@ -55,7 +54,6 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
   const categories = await Promise.all(categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result)))
   analyzers.forEach(analyzer => {
     insertApp(ResultDTO.fromAPI({...appInfo, categories, timestamp: Date.now(), results: analyzer.tests}))
-      .then(result => console.log(result))
   })
 }
 
