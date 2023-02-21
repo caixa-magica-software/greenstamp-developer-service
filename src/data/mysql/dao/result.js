@@ -1,4 +1,5 @@
 const Result = require("../models/result")
+const AppCategories = require("../models/app-category")
 const sequelize = require("../index")
 
 exports.insert = (dto) => {
