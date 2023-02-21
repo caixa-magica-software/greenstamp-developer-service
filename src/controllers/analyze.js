@@ -44,8 +44,8 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
     sendToAnalyzers(resolve, body, {...appInfo, categories: categoriesInfo }, file, analyzers)
   } catch(error) {
     if(error.code == 404 && file != null) {
-      if(shouldRegister) registerApp(body, analyzers)
-      sendToAnalyzers(resolve, {}, file, body, analyzers)
+      if(shouldRegister) registerApp(body, [ { id: -1, name: 'not available' } ], analyzers)
+      sendToAnalyzers(resolve, body, {}, file, analyzers)
     } else reject(error)
   }
 }
@@ -58,11 +58,11 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
 }
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
+  const form = new FormData()
+  if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
   analyzers.forEach(analyzer => {
-    const form = new FormData()
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
-    if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
     axios.post(analyzer.url, form, { headers: form.getHeaders() })
   })
   resolve({ code: 200 })
