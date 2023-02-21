@@ -1,9 +1,10 @@
 const FormData = require('form-data')
 const axios = require("axios")
 
-const { getApplicationInfo } = require("./aptoide")
+const { getApplicationInfo, getApplicationCategory } = require("./aptoide")
 const { getResultsByApp } = require("./result")
-const { insert } = require("../data/mysql/dao/result")
+const { insert: insertApp } = require("../data/mysql/dao/result")
+const { findOrCreate: findOrCreateCategory } = require("../data/mysql/dao/category")
 const analyzers = require("../analyzers")()
 const ResultDTO = require("../dto/result")
 
@@ -35,33 +36,39 @@ const shouldAnalyze = (result, isForcing) => {
   return false
 }
 
-const registerApp = (body, analyzers) => {
+const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
+  try {
+    const appInfo = await getApplicationInfo(body)
+    const categoriesInfo = await getApplicationCategory(appInfo.data.id)
+    console.log(categoriesInfo)
+    if(shouldRegister) registerApp(body, categoriesInfo.data, analyzers)
+    //sendToAnalyzers(resolve, body, {...appInfo, categories: categoryInfo }, file, analyzers)
+  } catch(error) {
+    if(error.code == 404 && file != null) {
+      if(shouldRegister) registerApp(body, analyzers)
+      sendToAnalyzers(resolve, {}, file, body, analyzers)
+    } else reject(error)
+  }
+}
+
+const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
+  //const categories = categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result))
+  const categories = await Promise.all(categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result)))
   analyzers.forEach(analyzer => {
-    insert(ResultDTO.fromAPI({...body, timestamp: Date.now(), results: analyzer.tests}))
+    insertApp(ResultDTO.fromAPI({...appInfo, categories, timestamp: Date.now(), results: analyzer.tests}))
+      .then(result => console.log(result))
   })
 }
 
-const executeAnalysis = (resolve, reject, shouldRegister, file, body) => {
-  getApplicationInfo(body)
-    .then(response => {
-      sendToAnalyzers(resolve, response.data, file, body, analyzers)
-      if(shouldRegister) registerApp(body, analyzers)
-    })
-    .catch(error => {
-      if(error.code == 404 && file != null) {
-        sendToAnalyzers(resolve, {}, file, body, analyzers)
-        if(shouldRegister) registerApp(body, analyzers)
-      } else reject(error)
-    })
-}
-
-const sendToAnalyzers = (resolve, storeInfo, file, appInfo, analyzers) => {
+const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
   analyzers.forEach(analyzer => {
-    const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
+    /*
     const form = new FormData()
+    const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
     if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
     axios.post(analyzer.url, form, { headers: form.getHeaders() })
+    */
   })
   resolve({ code: 200 })
 } 

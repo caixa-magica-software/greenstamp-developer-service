@@ -1,14 +1,27 @@
 const Result = require("../models/result")
+const sequelize = require("../index")
 
 exports.insert = (dto) => {
-  return new Promise((resolve, reject) => {
-    Result.bulkCreate(parseEntriesToInsert(dto))
-      .then(result => resolve(result.dataValues))
-      .catch(error => reject(error))
+  return new Promise(async (resolve, reject) => {
+    try {
+      const results = await Result.bulkCreate(parseResultsEntriesToInsert(dto))
+      const appsCategories = await AppCategories.bulkCreate(
+        parseAppCategoriesEntriesToInsert(dto.packageName, dto.version, dto.categories)
+      )
+      resolve({...results, ...appsCategories})
+    } catch (error) {
+      reject(error)
+    }
   })
 }
 
-const parseEntriesToInsert = (dto) => {
+const parseAppCategoriesEntriesToInsert = (package, version, categories) => {
+  return categories.map(category => ({
+    category, package, version
+  }))
+}
+
+const parseResultsEntriesToInsert = (dto) => {
   return dto.results.map(result => ({
     appName: dto.appName,
     package: dto.packageName,
@@ -26,7 +39,6 @@ exports.update = (dto) => {
   return new Promise((resolve, reject) => {
     const updt = parseEntriesToInsert(dto)
     updt.forEach(test => {
-      console.log("updating")
       Result.update({ ...test, state: 1 }, 
         { where: { package: dto.packageName, version: dto.version, testName: test.testName, testParameter: test.testParameter } })
         .then(result => resolve(result.dataValues))
@@ -37,7 +49,17 @@ exports.update = (dto) => {
 
 exports.getByApp = (dto) => {
   return new Promise((resolve, reject) => {
-    Result.findAll({ where: { package: dto.packageName, version: dto.version } })
+    sequelize.query(
+      `select app_name, r.package, r.version, test_name, test_parameter, test_result, unit, optional, `
+      + `category, timestamp from results r join apps_categories ac on r.package = ac.package and r.version = ac.version `
+      + `where r.package = :package and r.version = :version`,
+      { 
+        model: Result,
+        mapToModel: true,
+        replacements: { package: dto.packageName, version: dto.version }, 
+        type: sequelize.QueryTypes.SELECT 
+      }
+    )
     .then(result => resolve(parseEntriesToResponse(result)))
     .catch(error => reject(error))
   })
@@ -46,6 +68,10 @@ exports.getByApp = (dto) => {
 
 const parseEntriesToResponse = (entries) => {
   if(entries.length == 0) return {}
+  const categories = []
+  entries.forEach((result => {
+    if(!categories.includes(result.dataValues.category)) categories.push(result.dataValues.category)
+  }))
   const results = entries.map((result) => ({
     name: result.dataValues.testName,
     parameters: result.dataValues.testParameter,
@@ -58,6 +84,7 @@ const parseEntriesToResponse = (entries) => {
     packageName: entries[0].dataValues.package,
     version: entries[0].dataValues.version,
     timestamp: entries[0].dataValues.timestamp,
+    categories: categories,
     results: results
   }  
 }

@@ -1,6 +1,7 @@
 const dao = require("../data/mysql/dao/result")
 
-const { insert, update, getByApp } = require("../data/mysql/dao/result");
+const { insert, update, getByApp: getResultsByApp } = require("../data/mysql/dao/result");
+const { getByApp: getCategoriesByApp } = require("../data/mysql/dao/category");
 const ResultDTO = require("../dto/result");
 
 exports.saveResult = (body) => {
@@ -52,7 +53,7 @@ exports.getResultsByApp = (body) => {
 
 const executeGetResultsByApp = (resolve, reject, body) => {
   const dto = ResultDTO.fromAPI(body)
-  return getByApp(dto)
+  return getResultsByApp(dto)
     .then(results => parseResults(resolve, results))
     .catch(error => reject({ code: 500, message: error }))
 }
