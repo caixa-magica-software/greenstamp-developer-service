@@ -1,0 +1,23 @@
+{
+  "name": "Kadabra Analyze Tool",
+  "url": "http://51.210.255.156:3333/api/analyze",
+  "entity": "CMS",
+  "tests": [
+    {
+      "name": "Excessive Method Calls Detector",
+      "parameters": "Excessive Method Calls Detector"
+    },
+    {
+      "name": "HashMap Usage Detector",
+      "parameters": "HashMap Usage Detector"
+    },
+    {
+      "name": "Internal Getter Detector",
+      "parameters": "Internal Getter Detector"
+    },
+    {
+      "name": "Member Ignoring Method Detector",
+      "parameters": "Member Ignoring Method Detector"
+    }
+  ]
+}

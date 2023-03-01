@@ -5,7 +5,7 @@ module.exports = {
     database: "developer-service-db",
     username: "root",
     password: "devpassword",
-    host: "172.20.0.2",
+    host: "172.22.0.2",
     dialect: "mysql",
     define: {
       timestamps: false,
