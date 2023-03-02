@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASS}
     volumes:
-      - '../data/mysql:/var/lib/mysql'
+      - '/data/greenstamp/developer-service/mysql:/var/lib/mysql'
 
   developer-service:
     container_name: developer-service-api
