@@ -59,10 +59,11 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
   const form = new FormData()
-  if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
+  if(file) form.append('binary', file.buffer, { filename: file.originalname });
   analyzers.forEach(analyzer => {
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
+    console.log("Asking analysis to ", analyzer.name)
     axios.post(analyzer.url, form, { headers: form.getHeaders() })
   })
   resolve({ code: 200 })
