@@ -45,7 +45,7 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
   } catch(error) {
     if(error.code == 404 && file != null) {
       if(shouldRegister) registerApp(body, [ { id: -1, name: 'not available' } ], analyzers)
-      sendToAnalyzers(resolve, body, {}, file, analyzers)
+      sendToAnalyzers(resolve, body, { data: {} }, file, analyzers)
     } else reject(error)
   }
 }
