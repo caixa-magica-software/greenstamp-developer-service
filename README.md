@@ -37,6 +37,7 @@ Add .env file in the root folder with:
 ```
 DATABASE_URI=developer_service_db
 DATABASE_NAME=developer_service_db
+DATABASE_PORT=3306
 DATABASE_USER=userdev
 DATABASE_PASS=devpassword
 APTOIDE_API_BASE_URL=http://ws75.aptoide.com/api/7
