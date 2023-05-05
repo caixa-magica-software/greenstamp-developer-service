@@ -64,7 +64,12 @@ const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
     console.log("Asking analysis to ", analyzer.name)
-    axios.post(analyzer.url, form, { headers: form.getHeaders() })
+    axios
+      .post(analyzer.url, form, { headers: form.getHeaders() })
+      .then((response) => {
+        console.log("HTTP response.status: " + response.status);
+      })
+      .catch((err) => console.log(err));
   })
   resolve({ code: 200 })
 } 
