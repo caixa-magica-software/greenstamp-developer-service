@@ -1,4 +1,5 @@
 const Result = require("../models/result")
+const AppCategories = require("../models/app-category")
 const sequelize = require("../index")
 
 exports.insert = (dto) => {
@@ -37,7 +38,7 @@ const parseResultsEntriesToInsert = (dto) => {
 
 exports.update = (dto) => {
   return new Promise((resolve, reject) => {
-    const updt = parseEntriesToInsert(dto)
+    const updt = parseResultsEntriesToInsert(dto)
     updt.forEach(test => {
       Result.update({ ...test, state: 1 }, 
         { where: { package: dto.packageName, version: dto.version, testName: test.testName, testParameter: test.testParameter } })

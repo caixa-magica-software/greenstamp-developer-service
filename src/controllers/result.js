@@ -18,6 +18,7 @@ exports.saveResult = (body) => {
 
 exports.updateResult = (body) => {
   const { appName, packageName, version, results, timestamp, optional } = body
+  console.log(version)
   return new Promise((resolve, reject) => {
     if(appName == null || appName == "") reject({ code: 400, message: "appName field cannot be null or empty" });
     else if(packageName == null || packageName == "") reject({ code: 400, message: "package field cannot be null or empty" });
@@ -32,7 +33,8 @@ const executeUpdateResult = (resolve, reject, body) => {
   const dto = ResultDTO.fromAPI(body)
   return update(dto)
     .then(result => resolve({ code: 200, data: result }))
-    .catch(error => reject({ code: 500, message: error }))
+    //.catch(error => reject({ code: 500, message: error }))
+    .catch(error => console.log("ERROR", error))
 }
 
 const executeSaveResult = (resolve, reject, body) => {

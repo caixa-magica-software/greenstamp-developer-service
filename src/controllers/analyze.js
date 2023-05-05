@@ -40,35 +40,36 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
   try {
     const appInfo = await getApplicationInfo(body)
     const categoriesInfo = await getApplicationCategory(appInfo.data.id)
-    console.log(categoriesInfo)
     if(shouldRegister) registerApp(body, categoriesInfo.data, analyzers)
-    //sendToAnalyzers(resolve, body, {...appInfo, categories: categoryInfo }, file, analyzers)
+    sendToAnalyzers(resolve, body, {...appInfo, categories: categoriesInfo }, file, analyzers)
   } catch(error) {
     if(error.code == 404 && file != null) {
-      if(shouldRegister) registerApp(body, analyzers)
-      sendToAnalyzers(resolve, {}, file, body, analyzers)
+      if(shouldRegister) registerApp(body, [ { id: -1, name: 'not available' } ], analyzers)
+      sendToAnalyzers(resolve, body, { data: {} }, file, analyzers)
     } else reject(error)
   }
 }
 
 const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
-  //const categories = categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result))
   const categories = await Promise.all(categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result)))
   analyzers.forEach(analyzer => {
     insertApp(ResultDTO.fromAPI({...appInfo, categories, timestamp: Date.now(), results: analyzer.tests}))
-      .then(result => console.log(result))
   })
 }
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
+  const form = new FormData()
+  if(file) form.append('binary', file.buffer, { filename: file.originalname });
   analyzers.forEach(analyzer => {
-    /*
-    const form = new FormData()
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
-    if(file) form.append("binary", JSON.stringify(file.buffer), file.originalname)
-    axios.post(analyzer.url, form, { headers: form.getHeaders() })
-    */
+    console.log("Asking analysis to ", analyzer.name)
+    axios
+      .post(analyzer.url, form, { headers: form.getHeaders() })
+      .then((response) => {
+        console.log("HTTP response.status: " + response.status);
+      })
+      .catch((err) => console.log(err));
   })
   resolve({ code: 200 })
 } 
