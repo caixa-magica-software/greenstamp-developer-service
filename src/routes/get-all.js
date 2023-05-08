@@ -18,7 +18,15 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  const q = "SELECT * FROM " + database + ".results";
+  const q = `SELECT mysql.results.*, filtered_apps_categories.category
+  FROM results
+  INNER JOIN (
+      SELECT package, MAX(category) AS category
+      FROM apps_categories
+      WHERE category != 'not available'
+      GROUP BY package
+  ) AS filtered_apps_categories
+  ON results.package = filtered_apps_categories.package;`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
