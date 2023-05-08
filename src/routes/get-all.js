@@ -18,15 +18,17 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  const q = `SELECT mysql.results.*, filtered_apps_categories.category
-  FROM results
-  INNER JOIN (
-      SELECT package, MAX(category) AS category
-      FROM apps_categories
-      WHERE category != 'not available'
-      GROUP BY package
-  ) AS filtered_apps_categories
-  ON results.package = filtered_apps_categories.package;`;
+  const q = `SELECT DISTINCT t.*
+  FROM (
+      SELECT mysql.results.*, filtered_apps_categories.category
+      FROM results
+      INNER JOIN (
+          SELECT package, category
+          FROM apps_categories
+          WHERE category != 'not available'
+      ) AS filtered_apps_categories
+      ON results.package = filtered_apps_categories.package
+  ) AS t;`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
