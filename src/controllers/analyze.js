@@ -58,19 +58,27 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
 }
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
-  const form = new FormData()
   if(file) form.append('binary', file.buffer, { filename: file.originalname });
+  const results = [];
+  const promises = [];
   analyzers.forEach(analyzer => {
+    const form = new FormData()
     const app = { ...appInfo, ...storeInfo, tests: analyzer.tests }
     form.append("app", JSON.stringify(app))
     console.log("Asking analysis to ", analyzer.name)
-    axios
-      .post(analyzer.url, form, { headers: form.getHeaders() })
-      .then((response) => {
-        console.log("HTTP response.status: " + response.status);
+    promises.push(
+      axios.post(analyzer.url, form, { headers: form.getHeaders() }).then(response => {
+        results.push(response);
       })
-      .catch((err) => console.log(err));
+    )
   })
-  resolve({ code: 200 })
+  Promise.all(promises).then(() => { // All the requests were successful
+    // console.log('Results: '+ results);
+    resolve({ code: 200 });
+  })
+  .catch((error) => { // At least one of the requests returned an error
+    console.log("Received error from template: " + error);
+    resolve({ code: 400 });
+  });
 } 
 
