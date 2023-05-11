@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
       ON results.package = filtered_apps_categories.package
   ) AS t;`;
   db.query(q, (err, data) => {
-    if (err) return res.json(err);
+    if (err) return res.status(401).json(err);
     return res.json(data);
   });
 });
