@@ -20,7 +20,7 @@ const db = mysql.createConnection({
 router.get("/", (req, res) => {
   const q = `SELECT DISTINCT t.*
   FROM (
-      SELECT mysql.results.*, filtered_apps_categories.category
+      SELECT ${database}.results.*, filtered_apps_categories.category
       FROM results
       INNER JOIN (
           SELECT package, category
