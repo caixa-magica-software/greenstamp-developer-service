@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2");
-require("dotenv").config();
 
 const host = process.env.DATABASE_URI;
 const user = process.env.DATABASE_USER;
