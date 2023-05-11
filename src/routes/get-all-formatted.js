@@ -17,12 +17,19 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
+  // const q = `SELECT version, package, app_name,
+  // JSON_ARRAYAGG(
+  //     JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result)
+  // ) AS tests
+  // FROM ${database}.results
+  // GROUP BY version, package, app_name;`;
   const q = `SELECT version, package, app_name,
   JSON_ARRAYAGG(
-      JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result)
-  ) AS tests
+  JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result)
+  ) AS tests,
+  SUM(test_result) AS sum
   FROM ${database}.results
-  GROUP BY version, package, app_name;`;
+  GROUP BY package, version, app_name;`;
 
   db.query(q, (err, data) => {
     if (err) return res.status(401).json({ err });
