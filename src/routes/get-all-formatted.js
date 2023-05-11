@@ -23,13 +23,13 @@ router.get("/", (req, res) => {
   // ) AS tests
   // FROM ${database}.results
   // GROUP BY version, package, app_name;`;
-  const q = `SELECT version, package, app_name,
+  const q = `SELECT version, package, app_name, timestamp,
   JSON_ARRAYAGG(
   JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result)
   ) AS tests,
   SUM(test_result) AS sum
   FROM ${database}.results
-  GROUP BY package, version, app_name;`;
+  GROUP BY package, version, app_name, timestamp;`;
 
   db.query(q, (err, data) => {
     if (err) return res.status(401).json({ err });
