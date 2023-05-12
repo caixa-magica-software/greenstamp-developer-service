@@ -17,21 +17,49 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  // const q = `SELECT version, package, app_name,
-  // JSON_ARRAYAGG(
-  //     JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result)
-  // ) AS tests
-  // FROM ${database}.results
-  // GROUP BY version, package, app_name;`;
-  const q = `SELECT version, package, app_name,
-  JSON_ARRAYAGG(
-  JSON_OBJECT('name', test_name, 'param', test_parameter, 'result', test_result, 'timestamp', timestamp)
-  ) AS tests,
-  SUM(test_result) AS sum
-  FROM ${database}.results
-  GROUP BY package, version, app_name;`;
+  // Rankings are the same if the warnings sum value is the same
+  const q1 = `SELECT version, package, app_name, tests, sum, categories, ranking
+    FROM (
+        SELECT version, package, app_name, tests, sum, categories,
+        IF(sum IS NOT NULL, @rank := IF(@prevSum = sum, @rank, @rank + 1), NULL) AS ranking,
+        @prevSum := sum
+        FROM (
+            SELECT r.version, r.package, r.app_name,
+            JSON_ARRAYAGG(
+                JSON_OBJECT('name', r.test_name, 'param', r.test_parameter, 'result', r.test_result, 'timestamp', r.timestamp)
+            ) AS tests,
+            SUM(r.test_result) AS sum,
+            (
+                SELECT JSON_ARRAYAGG(ac.category)
+                FROM ${database}.apps_categories ac
+                WHERE r.package = ac.package AND r.version = ac.version AND ac.category != 'not available'
+            ) AS categories
+            FROM ${database}.results r
+            GROUP BY r.package, r.version, r.app_name
+            ORDER BY sum
+        ) ranked
+        CROSS JOIN (SELECT @rank := 0) vars
+        ORDER BY sum
+    ) final;`;
 
-  db.query(q, (err, data) => {
+  // Rankings are different if the warnings sum value is the same
+  const q2 = `SELECT version, package, app_name, tests, sum, categories,
+  IF(sum IS NOT NULL, @rank := IF(@prevSum = sum, @rank, @rank + 1), NULL) AS ranking
+  FROM (
+  SELECT r.version, r.package, r.app_name,
+   JSON_ARRAYAGG(
+   JSON_OBJECT('name', r.test_name, 'param', r.test_parameter, 'result', r.test_result, 'timestamp', r.timestamp)
+   ) AS tests,
+   SUM(r.test_result) AS sum,
+   (SELECT JSON_ARRAYAGG(ac.category) FROM ${database}.apps_categories ac WHERE r.package = ac.package AND r.version = ac.version AND ac.category != 'not available') AS categories
+  FROM ${database}.results r
+  GROUP BY r.package, r.version, r.app_name
+  ORDER BY sum
+  ) ranked
+  CROSS JOIN (SELECT @rank := 0, @prevSum := NULL) vars
+  ORDER BY sum;`;
+
+  db.query(q1, (err, data) => {
     if (err) return res.status(401).json({ err });
     return res.json({ data });
   });
