@@ -32,7 +32,7 @@ router.get("/", (req, res) => {
             (
                 SELECT JSON_ARRAYAGG(ac.category)
                 FROM ${database}.apps_categories ac
-                WHERE r.package = ac.package AND r.version = ac.version AND ac.category != 'not available'
+                WHERE r.package = ac.package AND ac.category != 'not available'
             ) AS categories
             FROM ${database}.results r
             GROUP BY r.package, r.version, r.app_name
