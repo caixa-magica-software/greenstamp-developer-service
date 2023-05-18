@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "f81e3bee-3a6c-4371-99c6-9d55dc8699df",
+		"name": "Greenstamp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3165939",
+		"_collection_link": "https://winter-rocket-17215.postman.co/workspace/OA-INCM~0c311fe0-0103-4ce2-a1ef-002068346aa3/collection/3165939-f81e3bee-3a6c-4371-99c6-9d55dc8699df?action=share&creator=3165939&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "api/analyze RTP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"RTP Notícias\",\n    \"packageName\": \"pt.rtp.noticias.android\",\n    \"version\": 138,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/analyze Duo Mobile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"Duo Mobile\",\n    \"packageName\": \"com.duosecurity.duomobile\",\n    \"version\": 439000,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/analyze com.netflix.mediaclient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"Netflix\",\n    \"packageName\": \"com.netflix.mediaclient\",\n    \"version\": 200217,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/analyze Instagram",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"Instagram\",\n    \"packageName\": \"com.instagram.android\",\n    \"version\": 368205575,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/analyze pt.iol.tviplayer.android",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"Tviplayer\",\n    \"packageName\": \"pt.iol.tviplayer.android\",\n    \"version\": 276,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/analyze com.zerogravity.kids.learn.piano",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appName\": \"Kids Learn Piano - Musical Toy\",\n    \"packageName\": \"com.zerogravity.kids.learn.piano\",\n    \"version\": 4,\n    \"forceTest\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Aptoide",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ws75.aptoide.com/api/7/getApp?package_name=pt.iol.tviplayer.android",
+					"protocol": "https",
+					"host": [
+						"ws75",
+						"aptoide",
+						"com"
+					],
+					"path": [
+						"api",
+						"7",
+						"getApp"
+					],
+					"query": [
+						{
+							"key": "package_name",
+							"value": "pt.iol.tviplayer.android"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
