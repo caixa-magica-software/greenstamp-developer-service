@@ -1,0 +1,15 @@
+{
+  "name": "Energy Tool Template",
+  "url": "http://localhost:4001/api/analyze",
+  "entity": "CMS",
+  "tests": [
+    {
+      "name": "Calls ",
+      "parameters": "Excessive"
+    },
+    {
+      "name": "HashMap",
+      "parameters": "HashMap"
+    }
+  ]
+}

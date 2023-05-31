@@ -1,6 +1,6 @@
 {
   "name": "Kadabra Analyze Tool",
-  "url": "http://51.210.255.156:3333/api/analyze",
+  "url": "http://localhost:4000/api/analyze",
   "entity": "CMS",
   "tests": [
     {
