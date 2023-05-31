@@ -31,6 +31,9 @@ const execute = (resolve, reject, file, body) => {
 }
 
 const shouldAnalyze = (result, isForcing) => {
+  console.log("shouldAnalyze");
+  console.log(isForcing);
+  console.log("isForcing:" + (isForcing == true));
   if(result.code == 404) return true
   if(isForcing != null && isForcing == true) return true
   return false
@@ -51,6 +54,7 @@ const executeAnalysis = async (resolve, reject, shouldRegister, file, body) => {
 }
 
 const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
+  console.log("registerApp");
   const categories = await Promise.all(categoriesInfo.map(category => findOrCreateCategory(category.name).then(result => result)))
   analyzers.forEach(analyzer => {
     insertApp(ResultDTO.fromAPI({...appInfo, categories, timestamp: Date.now(), results: analyzer.tests}))
