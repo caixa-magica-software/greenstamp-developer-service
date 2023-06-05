@@ -13,10 +13,28 @@ router.post("/", upload.single("binary"), async (req, res) => {
     (version == null || version == "") &&
     (appName == null || appName == "")
   ) {
+    let app = {
+      fetchError: false,
+    };
     const info = await axios.get(
       process.env.APTOIDE_API_BASE_URL + "/getApp?package_name=" + packageName
-    );
-    const app = info.data.nodes.meta.data;
+    ).catch((error) => {
+      res.status(500).json({ data: null, error: error.message })
+      console.log("Error fetching '" + packageName + "': " + error.message)
+      app.fetchError = true;
+      return;
+    });
+
+    if (app.fetchError == true) return;
+
+    app = info.data.nodes.meta.data;
+
+    if (
+      app.name == null || app.name == "" ||
+      app.file.vercode == null || app.file.vercode == "" ||
+      app.package == null || app.package == ""
+    ) return;
+
     doAnalysis(req.file, {
       appName: app.name,
       packageName: app.package,
