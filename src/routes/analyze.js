@@ -2,10 +2,11 @@ const router = require("express").Router();
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const { doAnalysis } = require("../controllers/analyze");
+const { calcRanking } = require("../controllers/calcRanking");
 const { default: axios } = require("axios");
 
 router.post("/", upload.single("binary"), async (req, res) => {
-  const { appName, packageName, version } = req.body;
+  const { appName, packageName, version, ranking } = req.body;
 
   if (
     packageName != null &&
@@ -42,9 +43,13 @@ router.post("/", upload.single("binary"), async (req, res) => {
       packageName: app.package,
       version: app.file.vercode,
     })
-      .then((result) =>
-        res.status(result.code).json({ data: result.data || null, error: null })
-      )
+      .then((result) => {
+        let data = result.data;
+
+        if (ranking == true) calcRanking(result).then((rankedResult) => data = rankedResult);
+
+        res.status(result.code).json({ data: data || null, error: null })
+      })
       .catch((error) =>
         res.status(error.code || 500).json({ data: null, error: error.message })
       );
@@ -54,9 +59,19 @@ router.post("/", upload.single("binary"), async (req, res) => {
   console.log("Analyze");
   console.log(req.body);
   doAnalysis(req.file, req.body)
-    .then((result) =>
-      res.status(result.code).json({ data: result.data || null, error: null })
-    )
+    .then((result) => {
+      let data = result.data;
+
+      if (ranking == true) {
+        calcRanking(result , ()=> {
+          res.status(result.code).json({ data: data || null, error: null })
+        })
+
+        return;
+      }
+
+      res.status(result.code).json({ data: data || null, error: null })
+    })
     .catch((error) =>
       res.status(error.code || 500).json({ data: null, error: error.message })
     );
