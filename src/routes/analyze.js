@@ -35,6 +35,8 @@ router.post("/", upload.single("binary"), async (req, res) => {
       app.package == null || app.package == ""
     ) return;
 
+    console.log("Analyze");
+    console.log(req.body);
     doAnalysis(req.file, {
       appName: app.name,
       packageName: app.package,
@@ -49,6 +51,8 @@ router.post("/", upload.single("binary"), async (req, res) => {
     return;
   }
 
+  console.log("Analyze");
+  console.log(req.body);
   doAnalysis(req.file, req.body)
     .then((result) =>
       res.status(result.code).json({ data: result.data || null, error: null })
