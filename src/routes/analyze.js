@@ -46,7 +46,13 @@ router.post("/", upload.single("binary"), async (req, res) => {
       .then((result) => {
         let data = result.data;
 
-        if (ranking == true) calcRanking(result).then((rankedResult) => data = rankedResult);
+        if (ranking == true) {
+          calcRanking(result , ()=> {
+            res.status(result.code).json({ data: data || null, error: null })
+          })
+  
+          return;
+        }
 
         res.status(result.code).json({ data: data || null, error: null })
       })
