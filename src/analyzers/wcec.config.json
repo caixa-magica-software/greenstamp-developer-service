@@ -1,0 +1,11 @@
+{
+  "name": "WCEC Analyze Tool",
+  "url": "http://51.210.255.156:4002/api/analyze",
+  "entity": "CMS",
+  "tests": [
+    {
+      "name": "Analysis wcec",
+      "parameters": "static"
+    }
+  ]
+}
