@@ -7,12 +7,14 @@ services:
     container_name: developer-service-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASS}
+      MYSQL_DATABASE: "developer_service_db"
+      MYSQL_ROOT_PASSWORD: "devrootpassword"
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3307:3306"
     volumes:
       - '/data/greenstamp/developer-service/mysql:/var/lib/mysql'
+      - '/data/greenstamp/developer-service/mysql_conf/my.cnf:/etc/my.cnf'
 
   developer-service:
     container_name: developer-service-api
@@ -24,11 +26,13 @@ services:
     ports:
       - 3000:3000
     environment:
-      DATABASE_URI: ${DATABASE_URI}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASS: ${DATABASE_PASS}
-      APTOIDE_API_BASE_URL: ${APTOIDE_API_BASE_URL}
+      DATABASE_URI: "51.210.255.156"
+      DATABASE_PORT: "3307"
+      DATABASE_NAME: "developer_service_db"
+      DATABASE_USER: "userdev"
+      DATABASE_PASS: "devpassword"
+      APTOIDE_API_BASE_URL: "http://ws75.aptoide.com/api/7"
       NODE_ENV: ${NODE_ENV}
+
     depends_on:
       - developer-service-db
