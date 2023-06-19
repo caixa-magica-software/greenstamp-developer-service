@@ -4,10 +4,9 @@ const router = express.Router();
 const { default: axios } = require("axios");
 
 router.get("/", async (req, res) => {
-  console.log("apiUrlInit: " + req.url);  
+  console.log("req.url: " + req.url);  
   const apiUrl = req.url.replace('/', '');
-  const fullUrl = `https://ws75.aptoide.com/7/getApp${apiUrl}`;
-
+  const fullUrl = `https://ws75.aptoide.com/api/7/getApp${apiUrl}`;
   console.log("fullurl: " + fullUrl);
   try {
     const response = await axios({
@@ -18,10 +17,10 @@ router.get("/", async (req, res) => {
     });
 
     res.send(response.data);
-    console.log("api Aptoide res : " + response.data)
+    console.log("api res : " + response.data)
   } catch (error) {
   const statusCode = error.response ? error.response.status : 500;
-    console.log("api aptoide error: " + error)
+    console.log("api error: " + error)
     res.status(statusCode).send(error.message);
   }
 
