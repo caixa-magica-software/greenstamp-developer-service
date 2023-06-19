@@ -5,8 +5,8 @@ const { default: axios } = require("axios");
 
 router.get("/", async (req, res) => {
   console.log("apiUrlInit: " + req.url);  
-  const apiUrl = req.url.replace('/get-api-aptoide', '/7/getApp');
-  const fullUrl = `https://ws75.aptoide.com/${apiUrl}`;
+  const apiUrl = req.url.replace('/', '');
+  const fullUrl = `https://ws75.aptoide.com/7/getApp${apiUrl}`;
 
   console.log("fullurl: " + fullUrl);
   try {
