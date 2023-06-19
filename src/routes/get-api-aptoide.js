@@ -4,7 +4,7 @@ const router = express.Router();
 const { default: axios } = require("axios");
 
 router.get("/", async (req, res) => {
-  const apiUrl = req.url.replace('/get-api-aptoide/', '/7/getApp/');
+  const apiUrl = req.url.replace('/get-api-aptoide', '/7/getApp');
   const fullUrl = `https://ws75.aptoide.com/${apiUrl}`;
 
   console.log("fullurl: " + fullUrl);
