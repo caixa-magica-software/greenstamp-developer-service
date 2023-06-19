@@ -12,6 +12,7 @@ app.use('/api/analyze', require('./routes/analyze'))
 app.use('/api/result', require('./routes/result'))
 app.use('/api/get-all', require('./routes/get-all'))
 app.use('/api/get-all-formatted', require('./routes/get-all-formatted'))
+app.use('/api/get-api-aptoide', require('./routes/get-api-aptoide'))
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Developer-Service is listening at ${process.env.PORT || 3000}`);
