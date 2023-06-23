@@ -38,7 +38,7 @@ router.get("/", (req, res) => {
               SELECT package, MAX(version)
               FROM ${database}.results
               GROUP BY package
-          ) AND r.test_name != 'wcec'
+          ) AND r.test_parameter == 'Kadabra Analyze Tool'
           GROUP BY r.package, r.version, r.app_name
           ORDER BY sum
       ) ranked
