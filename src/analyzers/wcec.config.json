@@ -4,8 +4,8 @@
   "entity": "CMS",
   "tests": [
     {
-      "name": "WCEC",
-      "parameters": "Static analysis (Abstract Interpretation)"
+      "name": "Static analysis (Abstract Interpretation)",
+      "parameters": "WCEC Analyze Tool"
     }
   ]
 }

@@ -4,12 +4,12 @@
   "entity": "CMS",
   "tests": [
     {
-      "name": "Calls Energy Tool Template",
-      "parameters": "Excessive Calls [Random result]"
+      "name": "Excessive Calls (random result)",
+      "parameters": "Energy Tool Template"
     },
     {
-      "name": "HashMap Energy Tool Template",
-      "parameters": "HashMap Excessive [Random result]"
+      "name": "HashMap Excessive (random result)",
+      "parameters": "Energy Tool Template"
     }
   ]
 }

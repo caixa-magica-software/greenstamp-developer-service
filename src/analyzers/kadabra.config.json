@@ -5,19 +5,19 @@
   "tests": [
     {
       "name": "Excessive Method Calls Detector",
-      "parameters": "Excessive Method Calls Detector"
+      "parameters": "Kadabra Analyze Tool"
     },
     {
       "name": "HashMap Usage Detector",
-      "parameters": "HashMap Usage Detector"
+      "parameters": "Kadabra Analyze Tool"
     },
     {
       "name": "Internal Getter Detector",
-      "parameters": "Internal Getter Detector"
+      "parameters": "Kadabra Analyze Tool"
     },
     {
       "name": "Member Ignoring Method Detector",
-      "parameters": "Member Ignoring Method Detector"
+      "parameters": "Kadabra Analyze Tool"
     }
   ]
 }
