@@ -1,0 +1,15 @@
+{
+  "name": "Energy Tool Template",
+  "url": "http://51.210.255.156:4001/api/analyze",
+  "entity": "CMS",
+  "tests": [
+    {
+      "name": "Excessive Calls (random result)",
+      "parameters": "Energy Tool Template"
+    },
+    {
+      "name": "HashMap Excessive (random result)",
+      "parameters": "Energy Tool Template"
+    }
+  ]
+}
