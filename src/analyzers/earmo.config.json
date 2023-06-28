@@ -1,6 +1,6 @@
 {
   "name": "Earmo Analyze Tool",
-  "url": "http://localhost:4003/api/analyze",
+  "url": "http://51.210.255.156:4003/api/analyze",
   "entity": "CMS",
   "tests": [
     {
