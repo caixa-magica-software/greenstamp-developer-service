@@ -40,6 +40,10 @@ exports.update = (dto) => {
   return new Promise((resolve, reject) => {
     const updt = parseResultsEntriesToInsert(dto)
     updt.forEach(test => {
+      console.log("UPDATE: " + dto.packageName);
+      console.log("UPDATE: " + dto.version);
+      console.log("UPDATE: " + test.testName);
+      console.log("UPDATE: " + test.testParameter);
       Result.update({ ...test, state: 1 }, 
         { where: { package: dto.packageName, version: dto.version, testName: test.testName, testParameter: test.testParameter } })
         .then(result => resolve(result.dataValues))
