@@ -42,3 +42,10 @@ DATABASE_USER=userdev
 DATABASE_PASS=devpassword
 APTOIDE_API_BASE_URL=http://ws75.aptoide.com/api/7
 ```
+
+# Run execpipe script in background
+
+```
+pm2 start execpipe.sh 
+pm2 logs -f execpipe
+```
