@@ -51,7 +51,7 @@ router.post("/", upload.single("binary"), async (req, res) => {
             res.status(result.code).json({ data: data || null, error: null })
           })
         } else {
-          res.status(503).json({ data: null, error: "No results. Try again later" })
+          res.status(202).json({ data: null, error: "No results. Try again later" })
         }
 
       })
@@ -71,7 +71,7 @@ router.post("/", upload.single("binary"), async (req, res) => {
           res.status(result.code).json({ data: data || null, error: null })
         })
       } else {
-        res.status(503).json({ data: null, error: "No results. Try again later" })
+        res.status(202).json({ data: null, error: "No results. Try again later" })
       }
 
     })
