@@ -49,3 +49,14 @@ APTOIDE_API_BASE_URL=http://ws75.aptoide.com/api/7
 pm2 start execpipe.sh 
 pm2 logs -f execpipe
 ```
+
+# Restart all analyzers
+
+```
+sudo docker restart $(docker ps -aq)
+sudo rm -rf /data/greenstamp/wcec/*
+sudo rm -rf /data/greenstamp/analyzer-earmo-api/uploads/*
+sudo rm -rf /data/greenstamp/analyzer-earmo-api/earmo_bin/*
+sudo rm -rf /data/greenstamp/analyzer-wcec-api/*
+sudo rm -rf /data/greenstamp/analyzer-kadabra-api/uploads/*
+ ```
