@@ -52,6 +52,8 @@ pm2 logs -f execpipe
 
 # Restart all analyzers
 
+Restart all analyzers and remote test folders
+
 ```
 sudo docker restart $(docker ps -aq)
 sudo rm -rf /data/greenstamp/wcec/*
