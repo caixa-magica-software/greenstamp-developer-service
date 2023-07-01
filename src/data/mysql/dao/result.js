@@ -23,10 +23,6 @@ const parseAppCategoriesEntriesToInsert = (package, version, categories) => {
 }
 
 const parseResultsEntriesToInsert = (dto) => {
-  console.log("##############################");
-  console.log(dto.appName)
-  console.log(dto.timestamp)
-  console.log(result.optional)
   return dto.results.map(result => ({
     appName: dto.appName,
     package: dto.packageName,
