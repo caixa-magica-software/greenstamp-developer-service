@@ -26,7 +26,7 @@ const parseResultsEntriesToInsert = (dto) => {
   console.log("##############################");
   console.log(dto.appName)
   console.log(dto.timestamp)
-  console.log(dto.optional)
+  console.log(result.optional)
   return dto.results.map(result => ({
     appName: dto.appName,
     package: dto.packageName,
@@ -36,7 +36,7 @@ const parseResultsEntriesToInsert = (dto) => {
     testResult: result.result,
     unit: result.unit,
     timestamp: dto.timestamp,
-    optional: dto.optional
+    optional: result.optional
   }))
 }
 
