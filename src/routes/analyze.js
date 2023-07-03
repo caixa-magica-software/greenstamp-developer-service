@@ -50,8 +50,10 @@ router.post("/", upload.single("binary"), async (req, res) => {
           calcRanking(result , ()=> {
             res.status(result.code).json({ data: data || null, error: null })
           })
-        } else {
+        } else if (ranking == true) {
           res.status(202).json({ data: null, error: "No results. Try again later" })
+        } else {
+          res.status(result.code).json({ data: data || null, error: null })
         }
 
       })
@@ -70,8 +72,10 @@ router.post("/", upload.single("binary"), async (req, res) => {
         calcRanking(result , ()=> {
           res.status(result.code).json({ data: data || null, error: null })
         })
-      } else {
+      } else if (ranking == true) {
         res.status(202).json({ data: null, error: "No results. Try again later" })
+      } else {
+        res.status(result.code).json({ data: data || null, error: null })
       }
 
     })
