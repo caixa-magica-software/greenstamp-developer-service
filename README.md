@@ -23,6 +23,25 @@ ALTER USER 'userdev'@'%' IDENTIFIED WITH mysql_native_password BY 'devpassword';
 FLUSH PRIVILEGES;
 ```
 
+#### Accept DB connections from any IP address
+
+Add the next lines at the end of the mysql configuration file. In this case `my.cnf` file.
+
+
+```
+bind-address	            = 0.0.0.0
+wait_timeout = 0
+interactive_timeout = 0
+```
+
+Copy `my.cnf` file to docker container.
+
+```
+volumes:
+    - '/data/greenstamp/developer-service/mysql_conf/my.cnf:/etc/my.cnf'
+```
+
+
 ## Import database dump
 
 ```
