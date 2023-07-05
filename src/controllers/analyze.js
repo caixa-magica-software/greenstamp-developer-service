@@ -62,7 +62,10 @@ const registerApp =  async (appInfo, categoriesInfo, analyzers) => {
 }
 
 const sendToAnalyzers = (resolve, appInfo, storeInfo, file, analyzers) => {
-  if(file) form.append('binary', file.buffer, { filename: file.originalname });
+  if(file) {
+    const form = new FormData()
+    form.append('binary', file.buffer, { filename: file.originalname });
+  }
   const results = [];
   const promises = [];
   analyzers.forEach(analyzer => {

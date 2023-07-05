@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
   FROM (
       SELECT ${database}.results.*, filtered_apps_categories.category
       FROM results
-      INNER JOIN (
+      LEFT JOIN (
           SELECT package, category
           FROM apps_categories
           WHERE category != 'not available'

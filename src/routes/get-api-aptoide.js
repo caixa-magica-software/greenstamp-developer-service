@@ -4,6 +4,11 @@ const url = require('url');
 
 const { default: axios } = require("axios");
 
+const parseError = (error, reject) => {
+  const description = error.response.data.errors[0].description
+  reject({ code: error.response.status, message: description})
+}
+
 router.get("/", async (req, res) => {
   console.log("req.url: " + req.url);  
   const getApplicationInfo = (packageName) => {
@@ -26,8 +31,6 @@ router.get("/", async (req, res) => {
   } catch(error) {
     return res.status(401).json({error})
   }
-
-
 });
 
 module.exports = router;
