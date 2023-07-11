@@ -17,17 +17,19 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  const q = `SELECT version, package, app_name, tests, sum, categories, ranking
+  const q = `SELECT version, package, app_name, tests, sum, categories, ranking, stars
   FROM (
       SELECT version, package, app_name, tests, sum, categories,
       IF(sum IS NOT NULL, @rank := IF(@prevSum = sum, @rank, @rank + 1), NULL) AS ranking ,
-      @prevSum := sum
+      @prevSum := sum,
+      stars
       FROM (
           SELECT r.version, r.package, r.app_name,
           JSON_ARRAYAGG(
               JSON_OBJECT('name', r.test_name, 'param', r.test_parameter, 'result', r.test_result, 'timestamp', r.timestamp)
           ) AS tests,
           SUM(r.test_result) AS sum,
+          AVG(r.stars) AS stars,
           (
               SELECT JSON_ARRAYAGG(ac.category)
               FROM ${database}.apps_categories ac
@@ -38,7 +40,7 @@ router.get("/", (req, res) => {
               SELECT package, MAX(version)
               FROM ${database}.results
               GROUP BY package
-          ) AND r.test_parameter = 'WCEC Analyze Tool'
+          ) AND r.test_parameter = 'Earmo Analyze Tool'
           GROUP BY r.package, r.version, r.app_name
           ORDER BY sum
       ) ranked
