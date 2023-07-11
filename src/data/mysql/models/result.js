@@ -12,7 +12,8 @@ module.exports = class Result extends Model {
       unit: DataTypes.STRING,
       timestamp: DataTypes.DATE,
       optional: DataTypes.STRING,
-      state: DataTypes.INTEGER
+      state: DataTypes.INTEGER,
+      stars: DataTypes.STRING
     }, { 
       sequelize,
       tableName:"results"
@@ -29,7 +30,8 @@ module.exports = class Result extends Model {
       testResult: dto.testResult,
       unit: dto.unit,
       timestamp: dto.timestamp,
-      optional: dto.optional
+      optional: dto.optional,
+      stars: dto.stars
     })
   }
 

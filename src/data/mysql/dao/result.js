@@ -122,7 +122,7 @@ const calcStars = (test, result) => {
       break;
   }
 
-  return stars;
+  return stars.toString();
 };
 
 const parseResultsEntriesToInsert = (dto) => {
