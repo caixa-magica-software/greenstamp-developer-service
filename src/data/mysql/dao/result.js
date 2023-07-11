@@ -42,20 +42,19 @@ const assignStars = (
     case result < threshold4:
       stars = 5;
       break;
-    case threshold3 > result >= threshold4:
+    case threshold4 <= result < threshold3:
       stars = 4;
       break;
-    case threshold2 > result >= threshold3:
+    case threshold3 <= result < threshold2:
       stars = 3;
       break;
-    case threshold1 > result >= threshold2:
+    case threshold2 <= result < threshold1:
       stars = 2;
       break;
-    case threshold0 > result >= threshold1:
+    case threshold1 <= result < threshold0:
       stars = 1;
       break;
     default:
-      break;
   }
 
   return stars;
