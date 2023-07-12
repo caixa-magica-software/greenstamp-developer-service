@@ -40,7 +40,7 @@ router.get("/", (req, res) => {
               SELECT package, MAX(version)
               FROM ${database}.results
               GROUP BY package
-          ) AND r.test_parameter = 'Earmo Analyze Tool'
+          ) AND r.test_parameter = 'WCEC Analyze Tool'
           GROUP BY r.package, r.version, r.app_name
           ORDER BY sum
       ) ranked
