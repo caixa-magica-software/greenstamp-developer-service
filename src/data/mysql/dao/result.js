@@ -39,6 +39,8 @@ const assignStars = (
   let stars = 0;
 
   switch (true) {
+    case (result === null || result === undefined):
+      break;
     case result < threshold4:
       stars = 5;
       break;
