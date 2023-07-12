@@ -68,6 +68,7 @@ const calcStars = (test, result) => {
   // determines the test and attributes a star rating based on the defined warning thresholds
   switch (test) {
     case "BindingResources2Early":
+      stars = assignStars(result, 20, 40, 60, 80);
       break;
     case "Blob":
       stars = assignStars(result, 20, 40, 60, 80);
