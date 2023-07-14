@@ -39,21 +39,21 @@ const assignStars = (
   let stars = 0;
 
   switch (true) {
-    case (result === null || result === undefined):
+    case result === null || result === undefined:
       break;
     case result < threshold4:
       stars = 5;
       break;
-    case threshold4 <= result < threshold3:
+    case threshold4 <= result && result < threshold3:
       stars = 4;
       break;
-    case threshold3 <= result < threshold2:
+    case threshold3 <= result && result < threshold2:
       stars = 3;
       break;
-    case threshold2 <= result < threshold1:
+    case threshold2 <= result && result < threshold1:
       stars = 2;
       break;
-    case threshold1 <= result < threshold0:
+    case threshold1 <= result && result < threshold0:
       stars = 1;
       break;
     default:
@@ -62,73 +62,71 @@ const assignStars = (
   return stars;
 };
 
-const calcStars = (test, result) => {
-  let stars = 0;
+const calcStars = (dto) => {
+  let total = 0;
+  let paramsSet = false;
+  let threshold4, threshold3, threshold2, threshold1, threshold0;
 
-  // determines the test and attributes a star rating based on the defined warning thresholds
-  switch (test) {
-    case "BindingResources2Early":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Blob":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Excessive Calls (random result)":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Excessive Method Calls Detector":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "HashMap Excessive (random result)":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "HashMap Usage Detector":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "HashMapUsageAndroid":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Internal Getter Detector":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "InternalGetterAndSettersAndroid":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "LargeClassLowCohesion":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "LazyClass":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "LongParameterList":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Member Ignoring Method Detector":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "RefusedParentBequest":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "ReleasingResources2Late":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "SpaghettiCode":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "SpeculativeGenerality":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    case "Static analysis (Abstract Interpretation)":
-      stars = assignStars(result, 20, 40, 60, 80);
-      break;
-    default:
-      break;
-  }
+  // determines the analyzer and attributes a star rating based on the defined warning thresholds
+  dto.results.forEach((test) => {
+    switch (test.parameters) {
+      case "Kadabra Analyze Tool":
+        total += test.result;
 
-  return stars.toString();
+        if (paramsSet === true) break;
+        threshold4 = 20;
+        threshold3 = 40;
+        threshold2 = 60;
+        threshold1 = 80;
+        threshold0 = 100;
+        break;
+      case "Earmo Analyze Tool":
+        total += test.result;
+
+        if (paramsSet === true) break;
+        threshold4 = 20;
+        threshold3 = 40;
+        threshold2 = 60;
+        threshold1 = 80;
+        threshold0 = 100;
+        break;
+      case "WCEC Analyze Tool":
+        total += test.result;
+
+        if (paramsSet === true) break;
+        threshold4 = 20;
+        threshold3 = 40;
+        threshold2 = 60;
+        threshold1 = 80;
+        threshold0 = 100;
+        break;
+      case "Energy Tool Template":
+        total += test.result;
+
+        if (paramsSet === true) break;
+        threshold4 = 20;
+        threshold3 = 40;
+        threshold2 = 60;
+        threshold1 = 80;
+        threshold0 = 100;
+        break;
+      default:
+    }
+  });
+
+  return assignStars(
+    total,
+    threshold4,
+    threshold3,
+    threshold2,
+    threshold1,
+    threshold0
+  ).toString();
 };
 
 const parseResultsEntriesToInsert = (dto) => {
+  const stars = calcStars(dto);
+
   return dto.results.map((result) => ({
     appName: dto.appName,
     package: dto.packageName,
@@ -139,7 +137,7 @@ const parseResultsEntriesToInsert = (dto) => {
     unit: result.unit,
     timestamp: dto.timestamp,
     optional: result.optional,
-    stars: calcStars(result.name, result.result),
+    stars: stars,
   }));
 };
 
