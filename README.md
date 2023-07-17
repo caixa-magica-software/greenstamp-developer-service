@@ -75,9 +75,10 @@ Restart all analyzers and remote test folders
 
 ```
 sudo docker restart $(docker ps -aq)
-sudo rm -rf /data/greenstamp/wcec/*
-sudo rm -rf /data/greenstamp/analyzer-earmo-api/uploads/*
-sudo rm -rf /data/greenstamp/analyzer-earmo-api/earmo_bin/*
-sudo rm -rf /data/greenstamp/analyzer-wcec-api/*
-sudo rm -rf /data/greenstamp/analyzer-kadabra-api/uploads/*
+```
+
+ and run the script to clean all analyzers temporary files:
+
+```
+ run clean_server.sh
  ```
