@@ -64,55 +64,44 @@ const assignStars = (
 
 const calcStars = (dto) => {
   let total = 0;
-  let paramsSet = false;
   let threshold4, threshold3, threshold2, threshold1, threshold0;
 
-  // determines the analyzer and attributes a star rating based on the defined warning thresholds
+  // determines the analyzer and attributes a star
+  // rating based on the defined warning thresholds
   dto.results.forEach((test) => {
-    switch (test.parameters) {
-      case "Kadabra Analyze Tool":
-        total += test.result;
-
-        if (paramsSet === true) break;
-        threshold4 = 20;
-        threshold3 = 40;
-        threshold2 = 60;
-        threshold1 = 80;
-        threshold0 = 100;
-        break;
-      case "Earmo Analyze Tool":
-        total += test.result;
-
-        if (paramsSet === true) break;
-        threshold4 = 20;
-        threshold3 = 40;
-        threshold2 = 60;
-        threshold1 = 80;
-        threshold0 = 100;
-        break;
-      case "WCEC Analyze Tool":
-        total += test.result;
-
-        if (paramsSet === true) break;
-        threshold4 = 20;
-        threshold3 = 40;
-        threshold2 = 60;
-        threshold1 = 80;
-        threshold0 = 100;
-        break;
-      case "Energy Tool Template":
-        total += test.result;
-
-        if (paramsSet === true) break;
-        threshold4 = 20;
-        threshold3 = 40;
-        threshold2 = 60;
-        threshold1 = 80;
-        threshold0 = 100;
-        break;
-      default:
-    }
+    total += test.result;
   });
+  switch (dto.results[0].parameters) {
+    case "Kadabra Analyze Tool":
+      threshold4 = 20;
+      threshold3 = 40;
+      threshold2 = 60;
+      threshold1 = 80;
+      threshold0 = 100;
+      break;
+    case "Earmo Analyze Tool":
+      threshold4 = 20;
+      threshold3 = 40;
+      threshold2 = 60;
+      threshold1 = 80;
+      threshold0 = 100;
+      break;
+    case "WCEC Analyze Tool":
+      threshold4 = 20;
+      threshold3 = 40;
+      threshold2 = 60;
+      threshold1 = 80;
+      threshold0 = 100;
+      break;
+    case "Energy Tool Template":
+      threshold4 = 20;
+      threshold3 = 40;
+      threshold2 = 60;
+      threshold1 = 80;
+      threshold0 = 100;
+      break;
+    default:
+  }
 
   return assignStars(
     total,
