@@ -33,27 +33,26 @@ const assignStars = (
   threshold4,
   threshold3,
   threshold2,
-  threshold1,
-  threshold0
-) => {
+  threshold1
+  ) => {
   let stars = 0;
 
   switch (true) {
     case result === null || result === undefined:
       break;
-    case result < threshold4:
+    case result <= threshold4:
       stars = 5;
       break;
-    case threshold4 <= result && result < threshold3:
+    case threshold4 < result && result <= threshold3:
       stars = 4;
       break;
-    case threshold3 <= result && result < threshold2:
+    case threshold3 < result && result <= threshold2:
       stars = 3;
       break;
-    case threshold2 <= result && result < threshold1:
+    case threshold2 < result && result <= threshold1:
       stars = 2;
       break;
-    case threshold1 <= result && result < threshold0:
+    case threshold1 < result:
       stars = 1;
       break;
     default:
@@ -64,7 +63,7 @@ const assignStars = (
 
 const calcStars = (dto) => {
   let total = 0;
-  let threshold4, threshold3, threshold2, threshold1, threshold0;
+  let threshold4, threshold3, threshold2, threshold1;
 
   // determines the analyzer and attributes a star
   // rating based on the defined warning thresholds
@@ -72,33 +71,29 @@ const calcStars = (dto) => {
     total += test.result;
   });
   switch (dto.results[0].parameters) {
-    case "Kadabra Analyze Tool":
-      threshold4 = 20;
-      threshold3 = 40;
-      threshold2 = 60;
-      threshold1 = 80;
-      threshold0 = 100;
+    case "Kadabra Analyze Tool": // {"thresholds": [0.0, 0.0, 1.0, 50.0]}
+      threshold4 = 0;
+      threshold3 = 0;
+      threshold2 = 1;
+      threshold1 = 50;
       break;
-    case "Earmo Analyze Tool":
-      threshold4 = 20;
-      threshold3 = 40;
-      threshold2 = 60;
-      threshold1 = 80;
-      threshold0 = 100;
+    case "Earmo Analyze Tool": // {"thresholds": [0.0, 1.0, 4.0, 35.0]}
+      threshold4 = 0;
+      threshold3 = 1;
+      threshold2 = 4;
+      threshold1 = 35;
       break;
-    case "WCEC Analyze Tool":
-      threshold4 = 20;
-      threshold3 = 40;
-      threshold2 = 60;
-      threshold1 = 80;
-      threshold0 = 100;
+    case "WCEC Analyze Tool": // {"thresholds": [0.0, 1000.0, 100000.0, 10000000.0]}
+      threshold4 = 0;
+      threshold3 = 1000;
+      threshold2 = 100000;
+      threshold1 = 10000000;
       break;
     case "Energy Tool Template":
       threshold4 = 20;
       threshold3 = 40;
       threshold2 = 60;
       threshold1 = 80;
-      threshold0 = 100;
       break;
     default:
   }
@@ -108,8 +103,7 @@ const calcStars = (dto) => {
     threshold4,
     threshold3,
     threshold2,
-    threshold1,
-    threshold0
+    threshold1
   ).toString();
 };
 
